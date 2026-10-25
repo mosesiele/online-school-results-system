@@ -4,7 +4,8 @@
   "description": "Full online school results management system for Mpongwe Day Secondary School.",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

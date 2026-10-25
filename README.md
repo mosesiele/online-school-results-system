@@ -1,88 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Department Management | Mpongwe Results</title>
-    <link rel="stylesheet" href="/styles.css" />
-  </head>
-  <body>
-    <header class="topbar">
-      <div class="inner">
-        <div class="brand">Mpongwe Day Secondary School</div>
-        <nav class="nav">
-          <a href="/dashboard">Dashboard</a>
-          <a href="/classes">Classes</a>
-          <a href="/pupils">Pupils</a>
-          <a href="/subjects">Subjects</a>
-          <a href="/marks">Marks</a>
-          <a href="/results">Results</a>
-          <a href="/class-summary">Class Summary</a>
-          <% if (user && user.role === 'admin') { %>
-            <a href="/departments">Departments</a>
-          <% } %>
-          <a href="/logout">Logout</a>
-        </nav>
-        <% if (user) { %>
-          <div class="user-chip"><%= user.name %> • <%= user.role %></div>
-        <% } %>
-      </div>
-    </header>
+# Mpongwe Day Secondary School Results Management System
 
-    <main class="container">
-      <div class="page-header">
-        <h1>Manage Departments</h1>
-      </div>
+A full online results management system built for school administration, teachers, and department users.
 
-      <% if (success) { %>
-        <div class="alert alert-success"><%= success %></div>
-      <% } %>
-      <% if (error) { %>
-        <div class="alert alert-error"><%= error %></div>
-      <% } %>
+Features
+- Admin dashboard
+- Teacher login
+- Department user login
+- Add pupil
+- Add class
+- Add subject
+- Enter Test 1, Test 2, Test 3 marks
+- Class summary
+- Results table view
+- Report cards
+- Mobile responsive design
+- Excel export
+- PDF export
 
-      <div class="form-wrap">
-        <form method="POST" action="/departments">
-          <div class="form-grid">
-            <div class="field">
-              <label for="name">Department Name</label>
-              <input id="name" name="name" type="text" required />
-            </div>
-            <div class="field">
-              <label for="username">Username</label>
-              <input id="username" name="username" type="text" required />
-            </div>
-            <div class="field">
-              <label for="password">Password</label>
-              <input id="password" name="password" type="password" required />
-            </div>
-            <div class="field" style="justify-content: flex-end;">
-              <button type="submit" class="btn btn-primary">Add Department User</button>
-            </div>
-          </div>
-        </form>
-      </div>
+Supported classes
+- Form 1E, 1L, 1M, 1N, 1S, 1W, 1Y
+- Form 2E, 2L, 2V
 
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Username</th>
-              <th>Role</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% departments.forEach((department) => { %>
-              <tr>
-                <td data-label="Name"><%= department.name %></td>
-                <td data-label="Username"><%= department.username %></td>
-                <td data-label="Role"><span class="badge"><%= department.role %></span></td>
-              </tr>
-            <% }) %>
-          </tbody>
-        </table>
-      </div>
-    </main>
-  </body>
-</html>
+Default login accounts
+- Admin: username = admin, password = admin123
+- Teacher: username = teacher, password = teacher123
+- Department: username = department, password = dept123
+
+Quick start
+1. Install dependencies:
+   npm install
+2. Start the app:
+   npm start
+3. Open in browser:
+   http://localhost:3000
+
+Project structure
+- server.js - application server and routes
+- db.js - SQLite database setup and seed data
+- views/ - EJS templates for dashboard, forms, reports, and tables
+- public/styles.css - responsive styling
+- data/school.db - SQLite database created automatically on first run
+
+Export functionality
+- Results page includes direct Excel export and direct PDF export for each selected class.
+
+This project uses:
+- Express.js
+- EJS views
+- SQLite database via better-sqlite3
+- ExcelJS for Excel export
+- PDFKit for PDF export
