@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard | Mpongwe School Results</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="inner">
+        <div class="brand">Mpongwe Day Secondary School</div>
+        <nav class="nav">
+          <a href="/dashboard">Dashboard</a>
+          <a href="/classes">Classes</a>
+          <a href="/pupils">Pupils</a>
+          <a href="/subjects">Subjects</a>
+          <a href="/marks">Marks</a>
+          <a href="/results">Results</a>
+          <a href="/class-summary">Class Summary</a>
+          <% if (user && user.role === 'admin') { %>
+            <a href="/departments">Departments</a>
+          <% } %>
+          <a href="/logout">Logout</a>
+        </nav>
+        <% if (user) { %>
+          <div class="user-chip"><%= user.name %> • <%= user.role %></div>
+        <% } %>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="page-header">
+        <h1>Administration Dashboard</h1>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h3>Total Pupils</h3>
+          <div class="value"><%= summary.totalPupils %></div>
+        </div>
+        <div class="card">
+          <h3>Total Classes</h3>
+          <div class="value"><%= summary.totalClasses %></div>
+        </div>
+        <div class="card">
+          <h3>Total Subjects</h3>
+          <div class="value"><%= summary.totalSubjects %></div>
+        </div>
+        <div class="card">
+          <h3>Recorded Marks</h3>
+          <div class="value"><%= summary.totalMarks %></div>
+        </div>
+      </div>
+
+      <div class="page-header" style="margin-top: 30px;">
+        <h2>Class Overview</h2>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Class</th>
+              <th>Pupils</th>
+              <th>Subjects</th>
+              <th>Average</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% classSummary.forEach((schoolClass) => { %>
+              <tr>
+                <td data-label="Class"><%= schoolClass.name %></td>
+                <td data-label="Pupils"><%= schoolClass.pupilCount %></td>
+                <td data-label="Subjects"><%= schoolClass.subjectCount %></td>
+                <td data-label="Average"><%= schoolClass.average %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </body>
+</html>

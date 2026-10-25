@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Classes | Mpongwe Results</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="inner">
+        <div class="brand">Mpongwe Day Secondary School</div>
+        <nav class="nav">
+          <a href="/dashboard">Dashboard</a>
+          <a href="/classes">Classes</a>
+          <a href="/pupils">Pupils</a>
+          <a href="/subjects">Subjects</a>
+          <a href="/marks">Marks</a>
+          <a href="/results">Results</a>
+          <a href="/class-summary">Class Summary</a>
+          <% if (user && user.role === 'admin') { %>
+            <a href="/departments">Departments</a>
+          <% } %>
+          <a href="/logout">Logout</a>
+        </nav>
+        <% if (user) { %>
+          <div class="user-chip"><%= user.name %> • <%= user.role %></div>
+        <% } %>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="page-header">
+        <h1>Manage Classes</h1>
+      </div>
+
+      <% if (success) { %>
+        <div class="alert alert-success"><%= success %></div>
+      <% } %>
+      <% if (error) { %>
+        <div class="alert alert-error"><%= error %></div>
+      <% } %>
+
+      <div class="form-wrap">
+        <form method="POST" action="/classes">
+          <div class="form-grid">
+            <div class="field">
+              <label for="name">New Class</label>
+              <input id="name" name="name" type="text" placeholder="e.g. Form 2E" required />
+            </div>
+            <div class="field" style="justify-content: flex-end;">
+              <button type="submit" class="btn btn-primary">Add Class</button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Class Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% classes.forEach((schoolClass) => { %>
+              <tr>
+                <td data-label="ID"><%= schoolClass.id %></td>
+                <td data-label="Class Name"><%= schoolClass.name %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </body>
+</html>

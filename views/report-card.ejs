@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Report Card | Mpongwe Results</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="inner">
+        <div class="brand">Mpongwe Day Secondary School</div>
+        <nav class="nav">
+          <a href="/dashboard">Dashboard</a>
+          <a href="/classes">Classes</a>
+          <a href="/pupils">Pupils</a>
+          <a href="/subjects">Subjects</a>
+          <a href="/marks">Marks</a>
+          <a href="/results">Results</a>
+          <a href="/class-summary">Class Summary</a>
+          <% if (user && user.role === 'admin') { %>
+            <a href="/departments">Departments</a>
+          <% } %>
+          <a href="/logout">Logout</a>
+        </nav>
+        <% if (user) { %>
+          <div class="user-chip"><%= user.name %> • <%= user.role %></div>
+        <% } %>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="report-card">
+        <div class="student-header">
+          <div>
+            <div class="small-label">Student Details</div>
+            <h2 style="margin: 8px 0 0;"><%= pupil.full_name %></h2>
+          </div>
+          <div>
+            <div class="small-label">Admission No</div>
+            <div style="font-size: 1.2rem; font-weight: 700; margin-top: 8px;"><%= pupil.admission_no %></div>
+          </div>
+          <div>
+            <div class="small-label">Class</div>
+            <div style="font-size: 1.2rem; font-weight: 700; margin-top: 8px;"><%= pupil.class_name %></div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Test 1</th>
+                <th>Test 2</th>
+                <th>Test 3</th>
+                <th>Average</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% subjectRows.forEach((subject) => { %>
+                <tr>
+                  <td data-label="Subject"><%= subject.name %></td>
+                  <td data-label="Test 1"><%= subject.test1 || 0 %></td>
+                  <td data-label="Test 2"><%= subject.test2 || 0 %></td>
+                  <td data-label="Test 3"><%= subject.test3 || 0 %></td>
+                  <td data-label="Average"><%= subject.average %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="summary-row">
+          <div>
+            <div class="small-label">Overall Average</div>
+            <div style="font-size: 1.5rem; font-weight: 700;"><%= overallAverage %></div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

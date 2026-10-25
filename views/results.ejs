@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Results Table | Mpongwe Results</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="inner">
+        <div class="brand">Mpongwe Day Secondary School</div>
+        <nav class="nav">
+          <a href="/dashboard">Dashboard</a>
+          <a href="/classes">Classes</a>
+          <a href="/pupils">Pupils</a>
+          <a href="/subjects">Subjects</a>
+          <a href="/marks">Marks</a>
+          <a href="/results">Results</a>
+          <a href="/class-summary">Class Summary</a>
+          <% if (user && user.role === 'admin') { %>
+            <a href="/departments">Departments</a>
+          <% } %>
+          <a href="/logout">Logout</a>
+        </nav>
+        <% if (user) { %>
+          <div class="user-chip"><%= user.name %> • <%= user.role %></div>
+        <% } %>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="page-header">
+        <h1>Results Table</h1>
+        <% if (classId) { %>
+          <div class="btn-group">
+            <a class="btn btn-secondary" href="/export/class/<%= classId %>/excel">Export Excel</a>
+            <a class="btn btn-secondary" href="/export/class/<%= classId %>/pdf">Export PDF</a>
+          </div>
+        <% } %>
+      </div>
+
+      <div class="form-wrap">
+        <form method="GET" action="/results">
+          <div class="form-grid">
+            <div class="field">
+              <label for="classId">Class</label>
+              <select id="classId" name="classId" onchange="this.form.submit()">
+                <option value="">Choose class</option>
+                <% classes.forEach((schoolClass) => { %>
+                  <option value="<%= schoolClass.id %>" <%= Number(classId) === schoolClass.id ? 'selected' : '' %>><%= schoolClass.name %></option>
+                <% }) %>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <% if (classId && pupils.length) { %>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Pupil</th>
+                <% subjects.forEach((subject) => { %>
+                  <th><%= subject.name %></th>
+                <% }) %>
+                <th>Overall Avg</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% pupils.forEach((pupil) => { %>
+                <tr>
+                  <td data-label="Pupil"><%= pupil.full_name %></td>
+                  <%
+                    let total = 0;
+                    let count = 0;
+                    subjects.forEach((subject) => {
+                      const record = marksMap[pupil.id] && marksMap[pupil.id][subject.id];
+                      const average = record ? getAverage([record.test1, record.test2, record.test3]) : 0;
+                      total += Number(average);
+                      count += record ? 1 : 0;
+                  %>
+                    <td data-label="<%= subject.name %>">
+                      <%= record ? Number(average).toFixed(2) : 'N/A' %>
+                    </td>
+                  <% }) %>
+                  <td data-label="Overall Avg"><%= count ? Number(total / count).toFixed(2) : '0.00' %></td>
+                  <td data-label="Action"><a class="badge" href="/report-card/<%= pupil.id %>">Report Card</a></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Marks Entry | Mpongwe Results</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="inner">
+        <div class="brand">Mpongwe Day Secondary School</div>
+        <nav class="nav">
+          <a href="/dashboard">Dashboard</a>
+          <a href="/classes">Classes</a>
+          <a href="/pupils">Pupils</a>
+          <a href="/subjects">Subjects</a>
+          <a href="/marks">Marks</a>
+          <a href="/results">Results</a>
+          <a href="/class-summary">Class Summary</a>
+          <% if (user && user.role === 'admin') { %>
+            <a href="/departments">Departments</a>
+          <% } %>
+          <a href="/logout">Logout</a>
+        </nav>
+        <% if (user) { %>
+          <div class="user-chip"><%= user.name %> • <%= user.role %></div>
+        <% } %>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="page-header">
+        <h1>Enter Test Marks</h1>
+      </div>
+
+      <div class="form-wrap">
+        <form method="GET" action="/marks">
+          <div class="form-grid">
+            <div class="field">
+              <label for="classId">Select Class</label>
+              <select id="classId" name="classId" onchange="this.form.submit()">
+                <option value="">Choose class</option>
+                <% classes.forEach((schoolClass) => { %>
+                  <option value="<%= schoolClass.id %>" <%= Number(classId) === schoolClass.id ? 'selected' : '' %>><%= schoolClass.name %></option>
+                <% }) %>
+              </select>
+            </div>
+            <% if (classId) { %>
+              <div class="field">
+                <label for="subjectId">Select Subject</label>
+                <select id="subjectId" name="subjectId" onchange="this.form.submit()">
+                  <option value="">Choose subject</option>
+                  <% subjectOptions.forEach((subject) => { %>
+                    <option value="<%= subject.id %>" <%= Number(subjectId) === subject.id ? 'selected' : '' %>><%= subject.name %></option>
+                  <% }) %>
+                </select>
+              </div>
+            <% } %>
+          </div>
+        </form>
+      </div>
+
+      <% if (classId && subjectId && pupils.length) { %>
+        <form method="POST" action="/marks">
+          <input type="hidden" name="classId" value="<%= classId %>" />
+          <input type="hidden" name="subjectId" value="<%= subjectId %>" />
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Pupil</th>
+                  <th>Test 1</th>
+                  <th>Test 2</th>
+                  <th>Test 3</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% pupils.forEach((pupil) => { %>
+                  <tr>
+                    <td data-label="Pupil"><%= pupil.full_name %></td>
+                    <% const result = existingMarks[pupil.id] || {}; %>
+                    <td data-label="Test 1"><input class="input-marks" type="number" min="0" max="100" name="test1_<%= pupil.id %>" value="<%= result.test1 || 0 %>" /></td>
+                    <td data-label="Test 2"><input class="input-marks" type="number" min="0" max="100" name="test2_<%= pupil.id %>" value="<%= result.test2 || 0 %>" /></td>
+                    <td data-label="Test 3"><input class="input-marks" type="number" min="0" max="100" name="test3_<%= pupil.id %>" value="<%= result.test3 || 0 %>" /></td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin-top: 20px;">
+            <button type="submit" class="btn btn-success">Save Marks</button>
+          </div>
+        </form>
+      <% } %>
+    </main>
+  </body>
+</html>

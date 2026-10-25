@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Class Summary | Mpongwe Results</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="inner">
+        <div class="brand">Mpongwe Day Secondary School</div>
+        <nav class="nav">
+          <a href="/dashboard">Dashboard</a>
+          <a href="/classes">Classes</a>
+          <a href="/pupils">Pupils</a>
+          <a href="/subjects">Subjects</a>
+          <a href="/marks">Marks</a>
+          <a href="/results">Results</a>
+          <a href="/class-summary">Class Summary</a>
+          <% if (user && user.role === 'admin') { %>
+            <a href="/departments">Departments</a>
+          <% } %>
+          <a href="/logout">Logout</a>
+        </nav>
+        <% if (user) { %>
+          <div class="user-chip"><%= user.name %> • <%= user.role %></div>
+        <% } %>
+      </div>
+    </header>
+
+    <main class="container">
+      <div class="page-header">
+        <h1>Class Summary</h1>
+      </div>
+
+      <div class="form-wrap">
+        <form method="GET" action="/class-summary">
+          <div class="form-grid">
+            <div class="field">
+              <label for="classId">Select Class</label>
+              <select id="classId" name="classId" onchange="this.form.submit()">
+                <option value="">Choose class</option>
+                <% classes.forEach((schoolClass) => { %>
+                  <option value="<%= schoolClass.id %>" <%= Number(classId) === schoolClass.id ? 'selected' : '' %>><%= schoolClass.name %></option>
+                <% }) %>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <% if (selectedClass) { %>
+        <div class="card" style="margin-bottom: 20px;">
+          <h3>Selected Class</h3>
+          <div style="font-size: 1.6rem; font-weight: 700;"><%= selectedClass.name %></div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Pupil</th>
+                <th>Average</th>
+                <th>Subjects</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% pupilSummary.forEach((item) => { %>
+                <tr>
+                  <td data-label="Pupil"><%= item.pupil.full_name %></td>
+                  <td data-label="Average"><%= item.subjectAverage %></td>
+                  <td data-label="Subjects"><%= item.results.length %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="table-wrap" style="margin-top: 20px;">
+          <table>
+            <thead>
+              <tr>
+                <th>Subject</th>
+                <th>Class Average</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% subjectSummary.forEach((subject) => { %>
+                <tr>
+                  <td data-label="Subject"><%= subject.subject.name %></td>
+                  <td data-label="Class Average"><%= subject.classAverage %></td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </main>
+  </body>
+</html>

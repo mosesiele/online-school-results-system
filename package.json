@@ -1,0 +1,18 @@
+{
+  "name": "online-school-results-system",
+  "version": "1.0.0",
+  "description": "Full online school results management system for Mpongwe Day Secondary School.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^9.0.0",
+    "ejs": "^3.1.1",
+    "exceljs": "^4.1.1",
+    "express": "^4.19.2",
+    "express-session": "^1.18.0",
+    "pdfkit": "^0.14.0"
+  }
+}
